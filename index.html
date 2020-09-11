@@ -40,7 +40,30 @@
 
     <!--------------------->
 
-    <!-- Container-->
+    <!-- Main Section Container-->
+    <div class="container-fluid">
+        <!-- 1 Row-->
+        <div class="row">
+            <div class="col-3 bg-light border-1">
+                <div class=" headerSearch row mx-3">
+                    <h3>Search for a City:</h3>
+                </div>                
+                <div class="formInput row ml-3">
+                    <input class="border" type="text" id="searchCity" value=""/>
+                    <button type="button" class="btn btn-primary btn-md border-0" id="btn-search">
+                        <span class="oi oi-magnifying-glass"></span>
+                    </button>
+                </div>
+                <!-- this border it just to see it, it needs to clear or erase-->
+                <div class="row border m-3" id="historic-Cities">Historic Cities</div>
+            </div>
+            <div class="col-9">
+                <div class="row border m-3" id="targetCity"> city</div>
+                <div class="row m-3" id="infoCity">info</div>
+            </div>
+        </div>
+
+    </div>
 
     
     <script type="text/javascript" src="./assets/js/script.js"></script>
