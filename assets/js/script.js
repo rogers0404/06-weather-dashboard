@@ -62,20 +62,37 @@ var loadCity = function(){
             }
 };
 
+//listener or call function when is clicked on button on each city history using Jquery
+
+$(document).on("click", ".list-group-item", function(event) {
+
+    event.preventDefault();
+
+    /*******************************************************************/
+    /*  Acceptance Criteria #5                                         */
+    /*  WHEN I click on a city in the search history                   */
+    /*  THEN I am again presented with current and future conditions   */
+    /*  for that city                                                  */
+    /*******************************************************************/
+    //getting the attribute that contain the name of the city
+    var city = $(this).attr("attr");
+    callApiFetch(city);
+});
+
 // function to clean everything is inside the container
 var cleaningElement = function(element){
     element.innerHTML = "";
-}
+};
 
 //converting °F to °C
 var converTemp = function(temp){
     return (Math.floor((parseFloat(temp) -32) * (5/9))).toString();
-}
+};
 
 //converting Wind Speed form MPH to KHP
 var convertWSpeed = function(speed){
     return (Math.floor(parseFloat(speed) * 1.609)).toString();
-}
+};
 
 //function to determine how much intensity is UV Index
 var findUV = function(uv){
@@ -156,6 +173,13 @@ var weatherHTML = function (city, uv) {
 
     // 5 days forecast
 
+    /*******************************************************************/
+    /*  Acceptance Criteria #4                                         */
+    /*  WHEN I view future weather conditions for that city            */
+    /*  THEN I am presented with a 5-day forecast that displays        */
+    /*  the date, an icon representation of weather conditions,        */
+    /*  the temperature, and the humidity                              */
+    /*******************************************************************/
     var ctn6 = document.createElement("div");       //container to store the header h2 for <H2>5-Day Forecast:</H2>
     ctn6.classList.add("row");                     // class from bootstrap
     var ctn7 = document.createElement("div");       //container to store the col-12
@@ -230,12 +254,12 @@ var searchForDate9AM = function (str) {
     var hour = str.split(" ")[1].split(":")[0];
     var flag = false
    // alert(hour);
-    console.log(hour);
+    //console.log(hour);
     
     if(hour === "09"){
         flag = true
         //alert(flag);
-        console.log("searchForDate9AM");
+        //console.log("searchForDate9AM");
     }        
     
     return flag;
@@ -293,7 +317,7 @@ var createDataObject = function(list, position){
             //console.log(weatherCondition);
         }
     }
-    console.log(weatherCondition);
+    //console.log(weatherCondition);
 
 };
 
@@ -314,19 +338,14 @@ var callApiFetch = function(city){
     .then(function(weatherResponse) {
 
 
-        console.log(weatherResponse);
+        //console.log(weatherResponse);
         if (weatherResponse.cod != "200") {
             displayAlertMessage("Unable to find "+ city +" in OpenWeathermap.org");
             //console.log("Unable to find "+ city +" in OpenWeathermap.org");
             return;
             } else {
-        
-            // sending te list array for the data about the forescast and the object 
-            createDataObject(weatherResponse.list, weatherResponse.city.coord);
-            //console.log(weatherCondition[0].lat+" "+weatherCondition[0].lon)
-
-            
-
+                // sending te list array for the data about the forescast and the object 
+                createDataObject(weatherResponse.list, weatherResponse.city.coord);
             }
 
         fetch("http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat="+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
