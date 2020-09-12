@@ -19,18 +19,6 @@ var apiFetchUV = "http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39a
 // Objetc for Weather conditions for a city
 var weatherCondition = [];
 
-
- //according to https://www.epa.gov/sites/production/files/documents/uviguide.pdf 
- // there is a clasification about UV index in the world, for the porpuse of the challenge it will be this values
-
- /* values
-    
-    1-2 Low         (1 - 2.99999)   Green
-    3-5 Moderate    (3 - 5.99999)   Yellow 
-    6-7 High        (6 - 7.99999)   Red
-    8-10 Very High  (8 - 10.9999)   Brown
-    11+ Extreme     (11+ )          Black
- */
 /*******************************************************************/
 
 /************************* Functions *******************************/
@@ -47,7 +35,7 @@ function start() {
 var loadCity = function(){
 
     /*******************************************************************/
-    /*  Acceptance Criteria #2.2                                       */
+    /*  Acceptance Criteria #1.2                                       */
     /*  WHEN I search for a city                                       */
     /*  THEN that city is added to the search history                  */
     /*******************************************************************/
@@ -91,6 +79,23 @@ var convertWSpeed = function(speed){
 
 //function to determine how much intensity is UV Index
 var findUV = function(uv){
+
+    /*******************************************************************/
+    /*  Acceptance Criteria #3                                         */
+    /*  WHEN I view the UV index                                       */
+    /*  THEN I am presented with a color that indicates whether the    */
+    /*  conditions are favorable, moderate, or severe                  */
+    /*******************************************************************/
+
+    //according to https://www.epa.gov/sites/production/files/documents/uviguide.pdf 
+    // there is a clasification about UV index in the world, for the porpuse of the 
+    // challenge it will be this values    
+    //  1-2 Low         (1 - 2.99999)   Green
+    //  3-5 Moderate    (3 - 5.99999)   Yellow 
+    //  6-7 High        (6 - 7.99999)   Red
+    //  8-10 Very High  (8 - 10.9999)   Black
+    //  11+ Extreme     (11+ )          Black
+
     var indexUV = parseFloat(uv);
     var bgColor;                            // variable to store the background color for each case in UV index
     
