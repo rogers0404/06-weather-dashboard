@@ -11,10 +11,8 @@ var containerForecast = document.querySelector("#infoCity");
 //Array of Objects for localStores data
 var dataStore = JSON.parse(localStorage.getItem('cities')) || [];
 
-var apiFetch = "http://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q="
 var urlIcon = "http://openweathermap.org/img/wn/"
 // look for UV index by latitude and longitude coordinates
-var apiFetchUV = "http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc";     
 
 // Objetc for Weather conditions for a city
 var weatherCondition = [];
@@ -40,7 +38,6 @@ var loadCity = function(){
     /*  THEN that city is added to the search history                  */
     /*******************************************************************/
     cleaningElement(containerHistoricCities);
-    //containerHistoricCities.innerHTML = "";
 
         if(dataStore){
             // creating a unordered list to store the info
@@ -74,6 +71,7 @@ $(document).on("click", ".list-group-item", function(event) {
     /*  THEN I am again presented with current and future conditions   */
     /*  for that city                                                  */
     /*******************************************************************/
+
     //getting the attribute that contain the name of the city
     var city = $(this).attr("attr");
     callApiFetch(city);
@@ -128,11 +126,18 @@ var findUV = function(uv){
             else {
                     bgColor = "bg-dark";    // UV index: 8 - 10 and 11+ Black
             }
-    return bgColor
+    return bgColor;
 };
 
 // showing the information about the weather stored in the array of object weatherCondition
 var weatherHTML = function (city, uv) {
+
+    /*******************************************************************/
+    /*  Acceptance Criteria #1.1                                       */
+    /*  WHEN I search for a city                                       */
+    /*  THEN I am presented with current and future conditions for     */
+    /*  that city                                                      */
+    /*******************************************************************/    
 
     /*******************************************************************/
     /*  Acceptance Criteria #2                                         */
@@ -147,9 +152,9 @@ var weatherHTML = function (city, uv) {
     cleaningElement(containerForecast); 
 
     //Current City 
-    var ctn1 = document.createElement("div");                           // div for the City, date and weather condition
+    var ctn1 = document.createElement("div");                          // div for the City, date and weather condition
     ctn1.classList.add("col-6");                                       // class from bootstrap
-    var ctn2 = document.createElement("div");                           // div for the City, date and weather condition
+    var ctn2 = document.createElement("div");                          // div for the City, date and weather condition
     ctn2.classList.add("col-6");                                       // class from bootstrap
 
     var cityEl = document.createElement("h2");
@@ -157,11 +162,11 @@ var weatherHTML = function (city, uv) {
 
     cityEl.textContent = city + " (" + weatherCondition[0].dateT +")";
     imageCurrent.setAttribute("src", weatherCondition[0].icon);
-    //imageCurrent.classList.add("border");                               // class from bootstrap
+    //imageCurrent.classList.add("border");                            // class from bootstrap
     imageCurrent.classList.add("bg-info");                             // class from bootstrap
     ctn1.appendChild(cityEl);
     ctn2.appendChild(imageCurrent);
-    var ctn3  = document.createElement("div");      // div for humidity, wind speed, UV index and temperature
+    var ctn3  = document.createElement("div");                          // div for humidity, wind speed, UV index and temperature
     ctn3.classList.add("col-12");                       // class from bootstrap
     ctn3.innerHTML =    "<p>Temperature: " + weatherCondition[0].temp + " °F / " + converTemp(weatherCondition[0].temp) + " °C</p>" + 
                         "<p>Humidity: " + weatherCondition[0].humidity + "% </p>" +
@@ -180,15 +185,15 @@ var weatherHTML = function (city, uv) {
     /*  the date, an icon representation of weather conditions,        */
     /*  the temperature, and the humidity                              */
     /*******************************************************************/
-    var ctn6 = document.createElement("div");       //container to store the header h2 for <H2>5-Day Forecast:</H2>
-    ctn6.classList.add("row");                     // class from bootstrap
-    var ctn7 = document.createElement("div");       //container to store the col-12
+    var ctn6 = document.createElement("div");         //container to store the header h2 for <H2>5-Day Forecast:</H2>
+    ctn6.classList.add("row");                        // class from bootstrap
+    var ctn7 = document.createElement("div");         //container to store the col-12
     ctn7.classList.add("col-12");                     // class from bootstrap
     ctn7.innerHTML = "<h2>5-Day Forecast</h2>";
     ctn6.appendChild(ctn7);
     containerForecast.appendChild(ctn6);
 
-    var ctn8 = document.createElement("div");       //container to store the card weather
+    var ctn8 = document.createElement("div");         //container to store the card weather
     ctn8.classList.add("d-flex");                     // class from bootstrap
 
 
@@ -252,18 +257,13 @@ var saveCity = function(city){
 }
 var searchForDate9AM = function (str) {
     var hour = str.split(" ")[1].split(":")[0];
-    var flag = false
-   // alert(hour);
-    //console.log(hour);
+    var flag = false;
     
     if(hour === "09"){
-        flag = true
-        //alert(flag);
-        //console.log("searchForDate9AM");
+        flag = true;
     }        
     
     return flag;
-        
 };
 
 // formating the date that object response provide from the format "YYYY-MM-DD HH:MM:SS" to "MM/DD/YYYY"
@@ -274,6 +274,7 @@ var formatDate = function(strDate){
     return (newDate[1]+"/"+newDate[2]+"/"+newDate[0]);
 };
 
+//function to create the array of object to store the weather information 
 var createDataObject = function(list, position){
 
     // empty the array
@@ -292,17 +293,10 @@ var createDataObject = function(list, position){
     };
 
     weatherCondition.push(obj);
-    //console.log(weatherCondition);
-    
-    //alert(obj.dateT);
-    //alert(list.length);
-    //alert(list[1].dt_txt);
 
     for(var i=1; i<list.length; i++){
         // I decided to select the information of the following days when the time it would be 9 am
-        // getting the index when the time will be 9 am
-        
-        //alert("i= "+i);
+
         if(searchForDate9AM(list[i].dt_txt)){
             obj = {
                 dateT : formatDate(list[i].dt_txt),
@@ -314,10 +308,8 @@ var createDataObject = function(list, position){
                 lon: position.lon
             };
             weatherCondition.push(obj);
-            //console.log(weatherCondition);
         }
     }
-    //console.log(weatherCondition);
 
 };
 
@@ -326,47 +318,39 @@ var displayAlertMessage = function(msg) {
     alert(msg);
 };
 
+// function to retrieve to information about the weather
 var callApiFetch = function(city){
 
-    //var urlFetch = apiFetch+city;
-    //console.log(urlFetch);
     fetch("http://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q="+city)
-    //fetch(apiFetch+city)
+
     .then(function(weatherResponse) {
         return weatherResponse.json();
      })
     .then(function(weatherResponse) {
 
-
-        //console.log(weatherResponse);
         if (weatherResponse.cod != "200") {
+            
             displayAlertMessage("Unable to find "+ city +" in OpenWeathermap.org");
-            //console.log("Unable to find "+ city +" in OpenWeathermap.org");
+
             return;
-            } else {
+        } else {
                 // sending te list array for the data about the forescast and the object 
                 createDataObject(weatherResponse.list, weatherResponse.city.coord);
             }
 
         fetch("http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat="+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
-        //fetch(apiFetchUV+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
+
         .then(function(uvResponse) {
           return uvResponse.json();
         })
         .then(function(uvResponse) {
-            //console.log(uvResponse);
-          if (!uvResponse) {   //verify the information to validate
+
+          if (!uvResponse) {   //verify the information
             displayAlertMessage('OpenWeathermap.org could not find anything for latitude and Longitude');
-            //console.log('OpenWeathermap.org could not find anything for latitude and Longitude');
+
             return;
           } else {
-            //console.log(uvResponse);
-            /* var responseContainerEl = document.querySelector('#response-container');
-            responseContainerEl.innerHTML = '';
-            var gifImg = document.createElement('img');
-            gifImg.setAttribute('src', response.data[0].images.fixed_height.url);
-            responseContainerEl.appendChild(gifImg); */
-            
+
             //store the city in localStore
             saveCity(city);
 
@@ -378,23 +362,25 @@ var callApiFetch = function(city){
         .catch(function(error) {
             // if there is a problen to connect to OpenWeathermap.org
             displayAlertMessage("Unable to connect to OpenWeathermap.org");
+            return;
           });
 };
 
 // function listener on click button
 var search = function(event){
     event.preventDefault();
+
+    //getting the value of the input
     var inputElement = document.querySelector("#searchCity");
     var textInput = inputElement.value.trim();
-    //console.log(textInput);
+
     if(inputElement.value === ""){
         alert("Weather Dashbord\n   You must enter a City");
         return;
     }
     // if the value is a string 
     else{
-        //console.log(textInput);
-        // call function for api response
+   
         callApiFetch(textInput);
 
     }
