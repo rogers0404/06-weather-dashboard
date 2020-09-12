@@ -148,7 +148,7 @@ var weatherHTML = function (city, uv) {
     ctn3.classList.add("col-12");                       // class from bootstrap
     ctn3.innerHTML =    "<p>Temperature: " + weatherCondition[0].temp + " °F / " + converTemp(weatherCondition[0].temp) + " °C</p>" + 
                         "<p>Humidity: " + weatherCondition[0].humidity + "% </p>" +
-                        "<p>Wind Speed: " + weatherCondition[0].speed + "MPH / " + convertWSpeed(weatherCondition[0].speed) + " KPH </p>" +
+                        "<p>Wind Speed: " + weatherCondition[0].speed + " MPH / " + convertWSpeed(weatherCondition[0].speed) + " KPH </p>" +
                         "<p>UV index: <span class='text-white "+ findUV(uv) + "'>" + uv + "</span></p>";
     containerCurrent.appendChild(ctn1);
     containerCurrent.appendChild(ctn2);
@@ -156,16 +156,53 @@ var weatherHTML = function (city, uv) {
 
     // 5 days forecast
 
+    var ctn6 = document.createElement("div");       //container to store the header h2 for <H2>5-Day Forecast:</H2>
+    ctn6.classList.add("row");                     // class from bootstrap
+    var ctn7 = document.createElement("div");       //container to store the col-12
+    ctn7.classList.add("col-12");                     // class from bootstrap
+    ctn7.innerHTML = "<h2>5-Day Forecast</h2>";
+    ctn6.appendChild(ctn7);
+    containerForecast.appendChild(ctn6);
+
+    var ctn8 = document.createElement("div");       //container to store the card weather
+    ctn8.classList.add("d-flex");                     // class from bootstrap
+
+
+    // for loop to get the information about the weather stored in the array weatherCondition
     for(var i=1; i<weatherCondition.length; i++){    
         
-        var ctn4  = document.createElement("div");      // div for humidity, wind speed, UV index and temperature
-        ctn4.classList.add("col-6");                       // class from bootstrap
+        var ctn4  = document.createElement("div");      // div for the boostrap card
+        //ctn4.classList.add("col-2");                    // class from bootstrap
+        ctn4.classList.add("card");                     // class from bootstrap
+        ctn4.classList.add("bg-primary");               // class from bootstrap
+        ctn4.classList.add("text-white");               // class from bootstrap
+        ctn4.classList.add("rounded");                  // class from bootstrap
+        ctn4.classList.add("mr-2");                     // class from bootstrap
+        ctn4.classList.add("flex-fill")
+        var ctn5  = document.createElement("div");      // div for the body card
+        ctn5.classList.add("card-body");
+        //ctn5.classList.add("flex-fill");
+        var title = document.createElement("h6");
+        title.classList.add("card-title");
+        var imageForecast = document.createElement("img");
+        title.textContent = weatherCondition[i].dateT;
+        imageForecast.setAttribute("src", weatherCondition[i].icon);
+        var pEl1 = document.createElement("p");
+        var pEl2 = document.createElement("p");
+        pEl1.classList.add("small");
+        pEl1.textContent =   "Temperature: " + weatherCondition[i].temp + " °F";
+        pEl2.classList.add("small");
+        pEl2.textContent =  "Humidity: " + weatherCondition[i].humidity + "%";
+        ctn5.appendChild(title);
+        ctn5.appendChild(imageForecast);
+        ctn5.appendChild(pEl1);
+        ctn5.appendChild(pEl2)
+        ctn4.appendChild(ctn5);        
+        ctn8.appendChild(ctn4);
     }
-
-
-
+    containerForecast.appendChild(ctn8);
     
-}
+};
 
 // Store the city in localStore
 var saveCity = function(city){
@@ -198,6 +235,7 @@ var searchForDate9AM = function (str) {
     if(hour === "09"){
         flag = true
         //alert(flag);
+        console.log("searchForDate9AM");
     }        
     
     return flag;
@@ -224,7 +262,7 @@ var createDataObject = function(list, position){
         humidity : list[0].main.humidity,
         speed: list[0].wind.speed,
         temp: list[0].main.temp,
-        icon : urlIcon + list[0].weather[0].icon + "@2x.png",
+        icon : urlIcon + list[0].weather[0].icon + ".png",
         lat : position.lat,
         lon: position.lon
     };
@@ -242,14 +280,17 @@ var createDataObject = function(list, position){
         
         //alert("i= "+i);
         if(searchForDate9AM(list[i].dt_txt)){
-            obj.dateT = formatDate(list[i].dt_txt);
-            obj.humidity = list[i].main.humidity;
-            obj.speed = list[i].wind.speed;
-            obj.temp = list[i].main.temp;
-            obj.icon = urlIcon + list[i].weather[0].icon + ".png";
-            obj.lat = position.lat;
-            obj.lon = position.lon;
+            obj = {
+                dateT : formatDate(list[i].dt_txt),
+                humidity : list[i].main.humidity,
+                speed: list[i].wind.speed,
+                temp: list[i].main.temp,
+                icon : urlIcon + list[i].weather[0].icon + ".png",
+                lat : position.lat,
+                lon: position.lon
+            };
             weatherCondition.push(obj);
+            //console.log(weatherCondition);
         }
     }
     console.log(weatherCondition);
