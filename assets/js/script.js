@@ -321,7 +321,7 @@ var displayAlertMessage = function(msg) {
 // function to retrieve to information about the weather
 var callApiFetch = function(city){
 
-    fetch("http://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q="+city)
+    fetch("https://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q="+city)
 
     .then(function(weatherResponse) {
         return weatherResponse.json();
@@ -338,7 +338,7 @@ var callApiFetch = function(city){
                 createDataObject(weatherResponse.list, weatherResponse.city.coord);
             }
 
-        fetch("http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat="+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
+        fetch("https://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat="+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
 
         .then(function(uvResponse) {
           return uvResponse.json();
