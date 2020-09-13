@@ -32,7 +32,17 @@ Sixth Assignment in UCF Code Boot Camp
         * It was left the solution when:
             . the user put some wrong input for a city and the response give an error 404, telling that the server can give and appropiate response, Even though it is shown a error alert message about that city can not be found. The error is still persist. 
             . When you click in the historic buttons for each city saved a message it is shown telling that city is already added to the historic cities. It works, it does not look very well because this message is when a city is typed in the input and the city is in the historic. 
-            . On the link of Deployed Application in GitHub there are some error about HTTPS and GitHub block the response. See the Screenshot # 6. But in local everything is ok.
+            . On the link of Deployed Application in GitHub there are some error about HTTPS and GitHub block the response. See the Screenshot # 6 (solved). But in local everything is ok. 
+            
+            You must apply in every link you have. The solution is the following:
+                you have to update your code like this.
+                    var urlIcon;
+                    if (location.protocol === 'http:') {
+                        urlIcon = 'http://openweathermap.org/img/wn/';
+                    } else {
+                        urlIcon = 'https://openweathermap.org/img/wn/';
+                    }
+
         * It has been written comments along the code to explain every task, and also the repository has been commited.
 
 ##Screenshots:
