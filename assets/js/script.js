@@ -321,7 +321,14 @@ var displayAlertMessage = function(msg) {
 // function to retrieve to information about the weather
 var callApiFetch = function(city){
 
-    fetch("https://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q="+city)
+    var url;
+    if (location.protocol === 'http:') {
+        url = 'http://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q='+city;
+     } else {
+        url = 'https://api.openweathermap.org/data/2.5/forecast?appid=b262298fbe39ad30d243f31f6e1297bc&units=imperial&q='+city;
+     }
+
+    fetch(url)
 
     .then(function(weatherResponse) {
         return weatherResponse.json();
@@ -338,7 +345,14 @@ var callApiFetch = function(city){
                 createDataObject(weatherResponse.list, weatherResponse.city.coord);
             }
 
-        fetch("https://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat="+weatherCondition[0].lat+"&lon="+weatherCondition[0].lon)
+            var url1;
+        if (location.protocol === 'http:') {
+            url1 = 'http://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat='+weatherCondition[0].lat+'&lon='+weatherCondition[0].lon;
+        } else {
+            url1 = 'https://api.openweathermap.org/data/2.5/uvi?appid=b262298fbe39ad30d243f31f6e1297bc&lat='+weatherCondition[0].lat+'&lon='+weatherCondition[0].lon;
+        }
+
+        fetch(url1)
 
         .then(function(uvResponse) {
           return uvResponse.json();
