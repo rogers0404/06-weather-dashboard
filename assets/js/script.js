@@ -11,7 +11,13 @@ var containerForecast = document.querySelector("#infoCity");
 //Array of Objects for localStores data
 var dataStore = JSON.parse(localStorage.getItem('cities')) || [];
 
-var urlIcon = "http://openweathermap.org/img/wn/"
+var urlIcon;
+    if (location.protocol === 'http:') {
+        urlIcon = 'http://openweathermap.org/img/wn/';
+     } else {
+        urlIcon = 'https://openweathermap.org/img/wn/';
+     }
+
 // look for UV index by latitude and longitude coordinates
 
 // Objetc for Weather conditions for a city
